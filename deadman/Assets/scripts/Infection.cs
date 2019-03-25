@@ -9,6 +9,7 @@ public class Infection : MonoBehaviour
     public Image activeImage;
     public float cooldownTime = 5.0f;
     public bool isPressed = false;
+	public bool waitInfection = false;
     public GameObject mob;
     float cooldownTimer;
     public bool Activate = false;
@@ -34,6 +35,7 @@ public class Infection : MonoBehaviour
             AttackArea.GetComponent<SelectArea>().ActivateCircle(worldMousePos);
             //            Debug.Log(scanArea.Length);
             isPressed = false;
+			waitInfection = true;
         }
 
         
@@ -62,7 +64,7 @@ public class Infection : MonoBehaviour
             }
 
             //activeImage.fillAmount = 0.0f;
-            isPressed = false;
+			waitInfection =false;
         }
 
         if (activeImage.fillAmount < 1.0f)

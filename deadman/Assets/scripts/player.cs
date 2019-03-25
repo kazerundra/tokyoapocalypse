@@ -55,6 +55,7 @@ public class player : MonoBehaviour
 	public GameObject opponent;
 	public GameObject targetopponent;
 	public GameObject holdmenu; 
+	private bool waitStone;
 
 
 
@@ -122,16 +123,20 @@ public class player : MonoBehaviour
 
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-          //if (GetComponent<ItemUse>().mIsStoneCreated)
-          //                moveStatus = false;
+				/*
+				if (GetComponent<ItemUse> ().mIsStoneCreated) {
+					moveStatus = false;
+				} 
+				*/
 
           //else if (GetComponent<ItemUse>().mIsStoneCreated == false) { moveStatus = true; }
-            if (!menuStatus && (gameObject.GetComponent<Infection>().isPressed == false)) 
+				if (!menuStatus && (gameObject.GetComponent<Infection>().isPressed == false)&& (gameObject.GetComponent<Infection>().waitInfection == false)) 
             {
                     if (itemUse.IsStoneCreated && Input.GetMouseButtonDown(0))
                     {
-                        GetComponent<ItemUse>().mIsStoneCreated = false;
+                        //GetComponent<ItemUse>().mIsStoneCreated = false;
                         itemUse.ThrowStone(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+						waitStone = true;
                     }
                     else
                     {
@@ -140,7 +145,7 @@ public class player : MonoBehaviour
                         else if (Input.GetMouseButton(0))
                         { pressPeriod += Time.deltaTime; }
 
-                        if (Input.GetMouseButtonUp(0) && pressPeriod < 0.5f)
+						if (Input.GetMouseButtonUp(0) && pressPeriod < 0.5f&& waitStone==false)
                         {
                             if ((holdmenu.GetComponent<holdMenu>().swipe == false))
                             {
@@ -167,16 +172,22 @@ public class player : MonoBehaviour
                                 }
                                 else
                                 {
+															
+									moveStatus = true;
+									Vector2 touchPosition = Input.mousePosition;
+									screenToWorldPointPosition = Camera.main.ScreenToWorldPoint (touchPosition);
 
-                                    moveStatus = true;
-                                    Vector2 touchPosition = Input.mousePosition;
-                                    screenToWorldPointPosition = Camera.main.ScreenToWorldPoint(touchPosition);
                                 }
                             }
                         }
                     }
             }
         }
+			if (Input.GetMouseButtonUp(0)&&waitStone==true)
+			{
+				GetComponent<ItemUse>().mIsStoneCreated = false;
+				waitStone = false;
+			}
 
 		if (moveStatus)
         {

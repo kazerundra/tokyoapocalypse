@@ -40,7 +40,7 @@ public class PlayerItem : MonoBehaviour
 			if (canvasChild.name == "Item_Button")
 			{
 				foreach (Transform child in canvasChild)
-				{ child.FindChild("Total").GetComponent<Text>().text = currItemList[i].total.ToString(); }
+				{ child.Find("Total").GetComponent<Text>().text = currItemList[i].total.ToString(); }
 			}
 		}
 	}
@@ -50,7 +50,7 @@ public class PlayerItem : MonoBehaviour
 		int val = (int)type;
 
 		Transform canvasChild = GameObject.FindGameObjectWithTag("ItemButton").transform.GetChild(val);
-		canvasChild.FindChild("Total").GetComponent<Text>().text = currItemList[val].total.ToString();
+		canvasChild.Find("Total").GetComponent<Text>().text = currItemList[val].total.ToString();
 	}
 
 	static void addItem(int i)

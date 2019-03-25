@@ -163,7 +163,7 @@ public class Enemy : MonoBehaviour
         timeback += Time.deltaTime;
 	
 		if (gameObject != null && mState == State.Move ) {
-			if (mState == State.Move)
+			if (mState == State.Move&& mPriorityTarget.gameObject != null)
 				transform.position = Vector3.MoveTowards (transform.position, mPriorityTarget.transform.position, speed * Time.deltaTime);
                 anim.SetBool("Walk", true);
         }
