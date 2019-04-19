@@ -1,15 +1,18 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\Enemy.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\mob.cs">
     <Files>
-      <File FileName="Assets\scripts\Crate.cs" Line="1" Column="1" />
-      <File FileName="Assets\scripts\Enemy.cs" Line="164" Column="2" />
+      <File FileName="Assets\scripts\Enemy.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\player.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\ItemPickup.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\ItemUse.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\PlayerItem.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\SaveManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\scripts\Infection.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\sceneChange.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\SelectArea.cs" Line="1" Column="1" />
+      <File FileName="Assets\StageSelect.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\chase.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\mob.cs" Line="213" Column="12" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -34,6 +34,9 @@ public class ItemUse : MonoBehaviour
     bool mIsRemoved = false;
 
     player mPlayerController;
+	public GameObject Bat;
+	public bool isEquip=false;
+	public int atkUP=0;
 
     void Start()
     {
@@ -82,10 +85,20 @@ public class ItemUse : MonoBehaviour
             }
             else if(currItemList[i].type == type && currItemList[i].total != 0)
             {
-                if(type == ItemPickup.Type.Arm) Heal(armHeal);
-                else if(type == ItemPickup.Type.Organ) Heal(organHeal);
-                else if(type == ItemPickup.Type.Bat) AttackUp(batAttack);
-                else if(type == ItemPickup.Type.Pipe) AttackUp(pipeAttack);
+				if (type == ItemPickup.Type.Arm)
+					Heal (armHeal);
+				else if (type == ItemPickup.Type.Organ)
+					Heal (organHeal);
+				else if (type == ItemPickup.Type.Bat) {
+					Debug.Log ("Equip1");
+					atkUP = batAttack;
+					isEquip = true;
+					Bat.SetActive (true);
+				} else if (type == ItemPickup.Type.Pipe) {
+					atkUP = pipeAttack;
+					Debug.Log ("Equip2");
+					Bat.SetActive (true);
+				}
                 else if(type == ItemPickup.Type.Small_Stone) Small_Stone();
                 else if(type == ItemPickup.Type.Big_Stone) Big_Stone();
                 PlayerItem.ItemChange(type, false);
@@ -134,8 +147,18 @@ public class ItemUse : MonoBehaviour
     void Heal(int amount)
     { mPlayerController.Heal(amount); }
 
-    void AttackUp(int amount)
-    { mPlayerController.AttackUp(amount); }
+  
+	public void unequip(string equip)
+	{
+		int amount=0;
+		if (equip == "Bat") {
+			amount = batAttack;
+		}
+		mPlayerController.AttackUp (-amount);
+		Bat.SetActive (false);
+		atkUP = 0;
+		isEquip = false;
+	}
 
     void Small_Stone()
     {

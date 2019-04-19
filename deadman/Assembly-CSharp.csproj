@@ -46,6 +46,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Save.cs" />
+     <Compile Include="Assets\StageSelect.cs" />
      <Compile Include="Assets\Textures\UI\sceneChange.cs" />
      <Compile Include="Assets\VisualTween\Scripts\Runtime\EasingCurve.cs" />
      <Compile Include="Assets\VisualTween\Scripts\Runtime\EventNode.cs" />
@@ -53,6 +55,7 @@
      <Compile Include="Assets\VisualTween\Scripts\Runtime\Sequence.cs" />
      <Compile Include="Assets\VisualTween\Scripts\Runtime\SequenceNode.cs" />
      <Compile Include="Assets\VisualTween\Scripts\Runtime\Tweener.cs" />
+     <Compile Include="Assets\scripts\AttackRange.cs" />
      <Compile Include="Assets\scripts\CountDownTimer.cs" />
      <Compile Include="Assets\scripts\Crate.cs" />
      <Compile Include="Assets\scripts\DestroyAfterTime.cs" />
@@ -76,6 +79,7 @@
      <Compile Include="Assets\scripts\UI.cs" />
      <Compile Include="Assets\scripts\boss.cs" />
      <Compile Include="Assets\scripts\camera.cs" />
+     <Compile Include="Assets\scripts\chase.cs" />
      <Compile Include="Assets\scripts\enablemenuonclick.cs" />
      <Compile Include="Assets\scripts\ending.cs" />
      <Compile Include="Assets\scripts\enemy_range.cs" />

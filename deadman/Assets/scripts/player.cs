@@ -10,6 +10,7 @@ public class player : MonoBehaviour
     /*character stat*/
     public int playerHp = 100;
     public int maxPlayerHP = 100;
+	public float speed = 3.0f;
 	public bool alive;
 
     //limit movement 
@@ -24,7 +25,7 @@ public class player : MonoBehaviour
     bool isTouchAttackMove;
     bool isTouchMoveStatus;
     float pressPeriod = 0.0f;
-    bool isAttackMove = false;
+    public bool isAttackMove = false;
     GameObject enemyTarget;
     Vector3 touchPosition;
     Vector3 screenToWorldPointPosition;
@@ -55,12 +56,19 @@ public class player : MonoBehaviour
 	public GameObject opponent;
 	public GameObject targetopponent;
 	public GameObject holdmenu; 
+	//石を装備状態
 	private bool waitStone;
+	//攻撃できるかどうか
+	public bool canAttack;
+	public bool atkCd= false;
+	private float atkTimer = 3;
+	public float atkSpeed;
+	public Vector2 curPos;
+	public Vector2 afPos;
+	public float timer;
+	private Vector3 NewMP;
 
 
-
-
-    private Vector3 NewMP;
 
     void Start () 
     {
@@ -69,14 +77,14 @@ public class player : MonoBehaviour
         heartbeattype = 1;
         healthImage.GetComponent<Tweener>().Play("heartbeat");
         healthBackground.GetComponent<Tweener>().Play("heartbeat");
-        rigid2d = gameObject.GetComponent<Rigidbody2D>();
         mGetDamageEffect = GameObject.FindGameObjectWithTag("GetDamageEffect").gameObject;
         mHitEffect = Resources.Load("Prefabs/HitEffect") as GameObject;
         sprite = GetComponent<SpriteRenderer>();
-
+		rigid2d = GetComponent<Rigidbody2D> ();
         itemUse = GetComponent<ItemUse>();
         mPlayerStats = GetComponent<PlayerStats> ();
-
+		//Physics2D.IgnoreLayerCollision (9, 11);
+		//Physics2D.IgnoreLayerCollision (11, 8);
         mGetDamageEffect.SetActive(false);
     }
 
@@ -99,42 +107,108 @@ public class player : MonoBehaviour
 
     public void move(Vector3 mousePosition)
     {
-		
 		anim.SetTrigger ("Run");
-
-		transform.position = Vector2.MoveTowards(gameObject.transform.position, mousePosition, 3 * Time.deltaTime);
-        if(transform.position.x == mousePosition.x && transform.position.y == mousePosition.y)
+		Vector2 eek;
+		Vector2 newPos = Vector2.MoveTowards(gameObject.transform.position, mousePosition,speed* Time.deltaTime);
+	
+		GetComponent<Rigidbody2D>(). MovePosition (newPos);
+		if(transform.position.x == mousePosition.x && transform.position.y == mousePosition.y)
         {
             anim.SetTrigger("Stop");
             anim.ResetTrigger("Run");
-
         }
-
-        //        if (faceLeft) transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y);
-        //        else if (faceLeft == false) transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y);
     }
+	void FixedUpdate(){
+		if (moveStatus)
+		{
+			
+			timer += Time.deltaTime;
+
+			if (timer > 1 && timer < 1.5) {
+				curPos = transform.position;
+			} else if (timer > 1.5 && timer < 2) {
+				afPos = transform.position;
+			} 
+			else if (timer >2 && afPos == curPos) {
+				moveStatus = false;
+				timer = 0;
+			} else if (timer >2) {
+				timer = 0;
+			}
+
+
+			isAttackMove = false;
+			move(screenToWorldPointPosition);
+			Vector2 playerPos = new Vector2(transform.position.x, transform.position.y);
+			Vector2 WorldPos = new Vector2(screenToWorldPointPosition.x, screenToWorldPointPosition.y);
+			if (playerPos == WorldPos) {
+				moveStatus = false;
+				timer = 0;
+				anim.SetTrigger ("Stop");
+			}
+		
+		}else if (isAttackMove) {
+			moveStatus = false;
+			if(targetopponent != null)
+			{			
+				Vector2 enemyPosition = targetopponent.transform.position;
+				Vector2 temp = enemyPosition;
+				Vector2 pPos = rigid2d.position;
+				if (enemyPosition.x <= pPos.x) {
+					if (targetopponent.tag == "crate") {
+						temp.x += 1.5f; 
+					}else{
+						temp.x += 1.0f; 
+					} 
+					rightface = true;
+				}
+				else {
+					if (targetopponent.tag == "crate") {
+						temp.x -= 1.5f;
+					} else {
+						temp.x -= 1.0f;	
+					}
+					 rightface = false; };
+				if (GetComponentInChildren<AttackRange> ().StartAttack != true) {
+					move(temp);
+				}
+			
+				GetComponentInChildren<AttackRange> ().attackMove (targetopponent);
+				if (GetComponentInChildren<AttackRange>().StartAttack ==true && atkCd ==false)
+				{	GetComponentInChildren<AttackRange> ().AttackMove = false;
+					isAttackMove = false;
+
+					LaunchAttack (mPlayerStats.mStatus.strength + itemUse.atkUP);
+					
+					Debug.Log ("attack" +mPlayerStats.mStatus.strength + itemUse.atkUP);
+					GetComponentInChildren<AttackRange> ().StartAttack = false;
+					atkCd = true;
+				} 
+			}
+		}
+	}
 
 
     void Update() 
     {
-		//Debug.Log (alive);
+		if (atkCd) 
+		{
+			atkTimer -= Time.deltaTime;
+			if (atkTimer <= 0) {
+				atkCd = false;
+				atkTimer = 3;
+			}
+		}
 		if (alive){
         /*========================== Touch system =============================*/
 
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-				/*
-				if (GetComponent<ItemUse> ().mIsStoneCreated) {
-					moveStatus = false;
-				} 
-				*/
-
-          //else if (GetComponent<ItemUse>().mIsStoneCreated == false) { moveStatus = true; }
-				if (!menuStatus && (gameObject.GetComponent<Infection>().isPressed == false)&& (gameObject.GetComponent<Infection>().waitInfection == false)) 
+					if (!menuStatus && (gameObject.GetComponent<Infection>().isPressed == false)&& (gameObject.GetComponent<Infection>().waitInfection == false)) 
             {
                     if (itemUse.IsStoneCreated && Input.GetMouseButtonDown(0))
                     {
-                        //GetComponent<ItemUse>().mIsStoneCreated = false;
+                       
                         itemUse.ThrowStone(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 						waitStone = true;
                     }
@@ -157,14 +231,7 @@ public class player : MonoBehaviour
                                 if (transform.position.x > touchPos.x) temp.x = Mathf.Abs(transform.localScale.x);  // Flip left
                                 else if (transform.position.x < touchPos.x) temp.x = -Mathf.Abs(transform.localScale.x);  // Flip right
                                 transform.localScale = temp;
-                                //                        if (ClickSelect () != null && ClickSelect ().name == "crate") {
-                                //                            //Debug.Log ("working");
-                                //                            isAttackMove = true;
-                                //                        }
-                                //                        if (ClickSelect() != null && ClickSelect().name == "enemy" )
-                                //                        {
-                                //                            isAttackMove = true;                                    
-                                //                        }
+
                                 if (opponent != null)
                                 {
                                     targetopponent = opponent;
@@ -174,9 +241,7 @@ public class player : MonoBehaviour
                                 {
 															
 									moveStatus = true;
-									Vector2 touchPosition = Input.mousePosition;
-									screenToWorldPointPosition = Camera.main.ScreenToWorldPoint (touchPosition);
-
+									screenToWorldPointPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                                 }
                             }
                         }
@@ -189,33 +254,7 @@ public class player : MonoBehaviour
 				waitStone = false;
 			}
 
-		if (moveStatus)
-        {
-            move(screenToWorldPointPosition);
-            Vector2 playerPos = new Vector2(transform.position.x, transform.position.y);
-            Vector2 WorldPos = new Vector2(screenToWorldPointPosition.x, screenToWorldPointPosition.y);
-            if (playerPos == WorldPos) moveStatus = false;
-        }
-        else if (isAttackMove)
-        {
-			if(targetopponent != null)
-            {			
-				Vector2 enemyPosition = targetopponent.transform.position;
-                Vector2 temp = enemyPosition;
-				Vector2 pPos = transform.position;
-                    if (enemyPosition.x <= pPos.x) { temp.x += 1.0f; rightface = true; }
-                    else { temp.x -= 1.0f; rightface = false; };
-                move(temp);
-				if (pPos == temp)
-                {					
-                    isAttackMove = false;
-                    /// attakc
-                    LaunchAttack(mPlayerStats.mStatus.strength);
-                } 
-            }
-        }
-
-
+	
 
         float moveSpeed = mPlayerStats.mStatus.speed;
 		}
@@ -256,15 +295,24 @@ public class player : MonoBehaviour
 
     //attack script 攻撃
     private void LaunchAttack(int damageValue)
-    {
-        
-        //var IgnoreLayer = (1 << 9);
+    {	
+		if (targetopponent.GetComponent<Enemy> () != null) {
+			targetopponent.GetComponent<Enemy> ().GetDamage (damageValue);
+		} else if (targetopponent.GetComponent<Crate> () != null) {
+			targetopponent.GetComponent<Crate> ().Crate_damage(damageValue);
+		}
 
+		GetComponent<AudioSource> ().Play();
+		anim.SetTrigger("Attack");
+
+		Instantiate (mHitEffect, targetopponent.transform.position, Quaternion.identity);
+        //var IgnoreLayer = (1 << 9);
+		/*
         Debug.DrawRay(new Vector2(transform.position.x, transform.position.y + 0.5f), Vector2.left, Color.green);
 
         RaycastHit2D hit;
-        if( rightface) hit= Physics2D.Raycast((new Vector2(transform.position.x, transform.position.y + 0.5f)), Vector2.left * 1f, 1f);
-        else hit = Physics2D.Raycast((new Vector2(transform.position.x, transform.position.y + 0.5f)), Vector2.right * 1f, 1f);
+        if( rightface) hit= Physics2D.Raycast((new Vector2(transform.position.x, transform.position.y + 0.5f)), Vector2.left * 2f, 5f);
+        else hit = Physics2D.Raycast((new Vector2(transform.position.x, transform.position.y + 0.5f)), Vector2.right *2f, 5f);
         //Debug.Log(hit.collider.name);
         if (hit.collider != null) {
 			if (hit.collider.gameObject.tag == "Enemy" ||hit.collider.gameObject.tag == "Boss") {
@@ -287,28 +335,8 @@ public class player : MonoBehaviour
           
 
 		}
-//        if (hit.collider.gameObject.tag == "Enemy")
-//        {
-//            Debug.Log(hit.transform.gameObject.name);
-//            
-//            hit.transform.gameObject.GetComponent<Enemy>().GetDamage(damageValue);
-//
-//         
-//        }
-//		else if (hit.collider.gameObject.tag == "world_object")
-//        {
-//			Debug.Log(hit.transform.gameObject.name);
-//            //Debug.Log ("working1");
-//            anim.SetTrigger("Attack");
-//
-//            hit.transform.gameObject.GetComponent<Crate>().Crate_damage(damageValue);
-//
-//            Vector3 pos = hit.collider.bounds.center;
-//            if (transform.localScale.x > 0) pos.x -= 0.75f;
-//            else pos.x += 0.75f;
-//            //              Debug.Log("Instantiate");
-//            Instantiate(mHitEffect, pos, Quaternion.identity);
-//        }
+		*/
+//   
     }
 
     public void p_getDamage(int value)
@@ -325,6 +353,7 @@ public class player : MonoBehaviour
         {
             DeadScene.SetActive(true);
 			alive = false;
+			anim.SetBool("Death",true);
         }
         StartCoroutine(GetDamageEffect());
         healthImage.fillAmount = (float)playerHp / 100;

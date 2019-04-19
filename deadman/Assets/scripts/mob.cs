@@ -36,6 +36,7 @@ public class mob : MonoBehaviour
 	{
 		anim = GetComponent<Animator> ();
 		mobList.Add(this.gameObject);
+		Physics2D.IgnoreLayerCollision (9, 11);
 	}
 
 	struct NearestMobs
@@ -151,8 +152,6 @@ public class mob : MonoBehaviour
 		transform.position = Vector2.MoveTowards(gameObject.transform.position, target, movespeed * Time.deltaTime);
 	}
 
-
-
 	private void OnTriggerEnter2D(Collider2D hit)
 	{
         if (mState == State.Death) return;
@@ -211,8 +210,9 @@ public class mob : MonoBehaviour
             {
                 Destroy(gameObject);
             }
-           
+			return; 
         }
+
 		if (mState == State.RandomMove) randomPoint();
 		else if (mState == State.MoveToRandom)
 		{

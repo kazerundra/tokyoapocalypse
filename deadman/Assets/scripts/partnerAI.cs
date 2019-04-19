@@ -32,6 +32,8 @@ public class partnerAI : MonoBehaviour {
     //protect left or right
     //1 = left 2 = right
     public int direction;
+	//alive or not
+	public bool dead=false;
 
 
     // Use this for initialization
@@ -49,7 +51,8 @@ public class partnerAI : MonoBehaviour {
         if (partnerHP < 1f)
         {
             partnerHP = 0;
-            Destroy(gameObject, 1f);
+			anim.SetBool ("Dead", true);
+            Destroy(gameObject, 5f);
         }
     }
 
@@ -169,6 +172,7 @@ public class partnerAI : MonoBehaviour {
     }
     private void OnTriggerStay2D(Collider2D target)
     {
+		if(anim.GetBool("Dead"))return;
 		if (target.tag == "Enemy"|| target.tag == "Boss" )
         {
 			float enemyHP = target.gameObject.GetComponent<Enemy>().enemyHP;
@@ -202,6 +206,8 @@ public class partnerAI : MonoBehaviour {
     }
    // Update is called once per frame
     void Update () {
+		if (anim.GetBool("Dead"))
+			return;
         if (mode == 0) {
             idle();
         }

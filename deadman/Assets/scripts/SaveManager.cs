@@ -1,14 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+public class SaveManager : MonoBehaviour {
 
-public class SaveManager : MonoBehaviour 
-{
-	void Awake()
-	{
-//		PlayerPrefs.DeleteAll ();
-//		Debug.Log("Deelted");
+	public int currentStage= 1;
+	void Start () {
+		currentStage =LoadStage ();
 	}
+
+	public void saveClearStage(int Stage)
+	{
+		PlayerPrefs.SetInt ("stage", Stage);
+	}
+	public int LoadStage()
+	{
+		int stage=1;
+		if(PlayerPrefs.HasKey("stage"))stage = PlayerPrefs.GetInt("stage");
+		return stage;
+	}
+
 
 	public void SaveStatus(PlayerStats.Status stats, PlayerStats.Status addedStats)
 	{

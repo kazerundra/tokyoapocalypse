@@ -70,7 +70,6 @@ public class UI : MonoBehaviour {
         if (isStatus)
         {
             Time.timeScale = 0;
-            mPlayerStats.ShowStats ();
         } 
         else
         {
