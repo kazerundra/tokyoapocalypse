@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 public class SaveManager : MonoBehaviour {
 
-	public int currentStage= 1;
-	void Start () {
-		currentStage =LoadStage ();
+	public int currentStage= 0;
+	public int clearedStage =0;
+	void Start(){
+		clearedStage = LoadStage ();
 	}
 
 	public void saveClearStage(int Stage)
@@ -14,9 +15,12 @@ public class SaveManager : MonoBehaviour {
 	}
 	public int LoadStage()
 	{
-		int stage=1;
+		int stage=0;
 		if(PlayerPrefs.HasKey("stage"))stage = PlayerPrefs.GetInt("stage");
 		return stage;
+	}
+	public void stage(int stg){
+		currentStage = 0;
 	}
 
 

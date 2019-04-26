@@ -48,13 +48,16 @@
   <ItemGroup>
      <Compile Include="Assets\Save.cs" />
      <Compile Include="Assets\StageSelect.cs" />
+     <Compile Include="Assets\StartTutorialCollision.cs" />
      <Compile Include="Assets\Textures\UI\sceneChange.cs" />
+     <Compile Include="Assets\TutorialScript.cs" />
      <Compile Include="Assets\VisualTween\Scripts\Runtime\EasingCurve.cs" />
      <Compile Include="Assets\VisualTween\Scripts\Runtime\EventNode.cs" />
      <Compile Include="Assets\VisualTween\Scripts\Runtime\MethodArgument.cs" />
      <Compile Include="Assets\VisualTween\Scripts\Runtime\Sequence.cs" />
      <Compile Include="Assets\VisualTween\Scripts\Runtime\SequenceNode.cs" />
      <Compile Include="Assets\VisualTween\Scripts\Runtime\Tweener.cs" />
+     <Compile Include="Assets\loadStage.cs" />
      <Compile Include="Assets\scripts\AttackRange.cs" />
      <Compile Include="Assets\scripts\CountDownTimer.cs" />
      <Compile Include="Assets\scripts\Crate.cs" />

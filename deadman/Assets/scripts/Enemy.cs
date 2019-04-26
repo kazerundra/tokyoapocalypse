@@ -28,7 +28,6 @@ public class Enemy : MonoBehaviour
 	public GameObject chaseTarget;
 	public bool atkCd =false;
 	void Start (){
-		enemyHP = maxHP;
 		anim = GetComponent<Animator> ();
 		player = GameObject.FindGameObjectWithTag("Player").gameObject;
 		healthSlider.maxValue = maxHP;

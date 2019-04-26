@@ -65,29 +65,19 @@ public class holdMenu : MonoBehaviour {
                 swipe = true;
 				pressPeriod = 0;
 				secondPressPos = new Vector2(Input.mousePosition.x,Input.mousePosition.y);
-				Debug.Log (secondPressPos);
-				Debug.Log (firstPressPos);
 				//create vector from the two points
 				currentSwipe = new Vector2(secondPressPos.x - firstPressPos.x, secondPressPos.y - firstPressPos.y); 
-
 				//normalize the 2d vector
 				currentSwipe.Normalize();
                 //swipe left
                 if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 5f && !activated && swipe)
                 {   
-					//Debug.Log (currentSwipe.x);
-					//Debug.Log("left swipe");
                     activated = false;
-                    itempanel.GetComponent<ItemSwitch>().PressLeft();
-                    
+                    itempanel.GetComponent<ItemSwitch>().PressLeft();   
                 }
-
                 //swipe right
                 if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 5f && !activated && swipe)
                 {
-
-					//Debug.Log (currentSwipe.x);
-                    //Debug.Log("right swipe");
                     activated = false;
                     itempanel.GetComponent<ItemSwitch>().PressRight();
                     
