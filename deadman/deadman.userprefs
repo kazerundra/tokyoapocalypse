@@ -1,15 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\loadStage.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\Enemy.cs">
     <Files>
-      <File FileName="Assets\scripts\Enemy.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\Enemy.cs" Line="98" Column="78" />
       <File FileName="Assets\TutorialScript.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\Crate.cs" Line="1" Column="1" />
       <File FileName="Assets\StartTutorialCollision.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\mob.cs" Line="1" Column="1" />
-      <File FileName="Assets\StageSelect.cs" Line="6" Column="2" />
-      <File FileName="Assets\scripts\SaveManager.cs" Line="20" Column="3" />
+      <File FileName="Assets\StageSelect.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\SaveManager.cs" Line="1" Column="1" />
       <File FileName="Assets\loadStage.cs" Line="12" Column="3" />
+      <File FileName="Assets\scripts\partnerAI.cs" Line="14" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

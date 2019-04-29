@@ -174,7 +174,7 @@ public class mob : MonoBehaviour
     
 			timer -= attackTimer;
 			gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-			if(tempEnemyTarget != null) tempEnemyTarget.GetComponent<Enemy>().GetDamage(attackDMG);
+			if(tempEnemyTarget != null) tempEnemyTarget.GetComponent<Enemy>().GetDamage(attackDMG, gameObject);
 		}
 		else timer += Time.deltaTime;
 	}

@@ -297,7 +297,7 @@ public class player : MonoBehaviour
     private void LaunchAttack(int damageValue)
     {	
 		if (targetopponent.GetComponent<Enemy> () != null) {
-			targetopponent.GetComponent<Enemy> ().GetDamage (damageValue);
+			targetopponent.GetComponent<Enemy> ().GetDamage (damageValue,gameObject);
 		} else if (targetopponent.GetComponent<Crate> () != null) {
 			targetopponent.GetComponent<Crate> ().Crate_damage(damageValue);
 		}

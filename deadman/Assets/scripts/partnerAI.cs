@@ -34,6 +34,8 @@ public class partnerAI : MonoBehaviour {
     public int direction;
 	//alive or not
 	public bool dead=false;
+	//if attacked counterattack
+	public GameObject target;
 
 
     // Use this for initialization
@@ -55,6 +57,13 @@ public class partnerAI : MonoBehaviour {
             Destroy(gameObject, 5f);
         }
     }
+	public void  counterAttack(GameObject tgt){
+		if (target == null) {
+			target = tgt;
+			mode = 1;
+		}
+
+	}
 
     public void idle()
     {
@@ -75,6 +84,7 @@ public class partnerAI : MonoBehaviour {
         else { pos = -3; nowDir = -1; }
 		Vector2 protectPosition = new Vector3 (player.transform.position.x-pos,player.transform.position.y,player.transform.position.z);
 		transform.position = Vector3.MoveTowards(nakama_position, protectPosition, step);
+		target = null;
 	}
     public void move()
     {
@@ -89,6 +99,8 @@ public class partnerAI : MonoBehaviour {
         {
             command = false;
             idle();
+			mode = 0;
+			target = null;
         }
         if (Mathf.Abs(mousePosition.x - nakama_position.x) > 0.1f)
         {
@@ -140,9 +152,9 @@ public class partnerAI : MonoBehaviour {
 	{
         anim.SetBool("Move", true);
 
-        GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
-		if (enemy) {
-			Vector3 e_position = enemy.transform.position;
+       
+		if (target != null) {
+			Vector3 e_position = target.transform.position;
 			Vector3 partner_position = transform.position;
 			float step = speed * Time.deltaTime;
 			float dist = Vector3.Distance(e_position, partner_position);
@@ -154,22 +166,26 @@ public class partnerAI : MonoBehaviour {
 			{
 				nowDir = 1;
 			}
-			if (dist <= 3.0f && dist >= 2.1f)
+			//transform.position = Vector3.MoveTowards(partner_position, e_position, step);
+
+			if (dist >= 1f)
 			{
 				transform.position = Vector3.MoveTowards(partner_position, e_position, step);
-			}
-			else if (dist < 2.1f)
+			}/*
+			else if (dist < 0.4f)
 			{
 				//attackDistance = !attackDistance;
 				//Debug.Log("stop");
 				this.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);   
 			}
+			*/		
 		} else { mode = 3;
 		}
 	
 
 
     }
+
     private void OnTriggerStay2D(Collider2D target)
     {
 		if(anim.GetBool("Dead"))return;
@@ -183,7 +199,7 @@ public class partnerAI : MonoBehaviour {
                 {
                     anim.SetTrigger("Attack");
                     timer -= atkSpd;
-                    target.gameObject.GetComponent<Enemy>().GetDamage(10);
+					target.gameObject.GetComponent<Enemy>().GetDamage(10,gameObject);
                     //Debug.Log(enemyHP);
                 }
                 else {
@@ -192,7 +208,7 @@ public class partnerAI : MonoBehaviour {
                 }
                     
             }
-            else mode = 0;
+            else mode = 3;
               
         }
         

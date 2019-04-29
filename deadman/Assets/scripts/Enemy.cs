@@ -60,8 +60,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void GetDamage(int damageDeal)
-    {        
+	public void GetDamage(int damageDeal,GameObject target)
+	{    if (!chaseTarget) {
+			chaseTarget = target;
+			chase = true;
+			attackTarget = null;
+		}   
 		anim.SetTrigger ("TakeDamage");
         damaged = true;
         enemyHP -= damageDeal;
@@ -101,10 +105,10 @@ public class Enemy : MonoBehaviour
 		{		
 
 			if (!atkCd)
-			{	chase = false;
+			{	//chase = false;
 				chaseTimer = 5;
 				atkCd = true;
-				GetComponent<AudioSource> ().Play();
+
 				Vector3 temp = transform.localScale;
 				if(transform.position.x < target.transform.position.x) temp.x = Mathf.Abs(transform.localScale.x);  // Flip left
 				else if(transform.position.x > target.transform.position.x) temp.x = -Mathf.Abs(transform.localScale.x);  // Flip right
@@ -112,6 +116,11 @@ public class Enemy : MonoBehaviour
 				timer=0f;
 				if (attackTarget != null) {
 					attack (attackTarget);
+					GetComponent<AudioSource> ().Play();
+					if (target.tag == "Partner") {
+						target.GetComponent<partnerAI> ().counterAttack (gameObject);
+					}
+					chaseTarget = null;
 				}
 
 			}
@@ -121,10 +130,7 @@ public class Enemy : MonoBehaviour
 				anim.SetTrigger("Stop");
 
 			}
-		} else if(mState == State.Move)
-		{
-			mState = State.Attack;
-		}  
+		}
 	} 
 
     private void OnTriggerExit2D(Collider2D other)
@@ -159,8 +165,10 @@ public class Enemy : MonoBehaviour
 				temp.x = -Mathf.Abs (transform.localScale.x); 
 			}
 			transform.localScale = temp;
+			float dist = Vector3.Distance(target.transform.position, transform.position);
+			if (dist >= 1f) {
+				transform.position = Vector2.MoveTowards (transform.position, target.transform.position, speed * Time.deltaTime);			}
 
-			transform.position = Vector2.MoveTowards (transform.position, target.transform.position, speed * Time.deltaTime);
 		} else {
 			
 			mState = State.Idle;
