@@ -42,18 +42,18 @@ public class TutorialScript : MonoBehaviour {
 	public void attackTutorial(){
 		if (t1)
 			return;
-		tutorialText.text ="しかし武器がないとダメジーは少ないです";
-		changeTextAfter("段ボールを破壊したら武器ゲットできます");
-		t1 = true;
+        tutorialText.text = "しかし武器がないとダメジーは少ないです";
+        changeTextAfter("段ボールを破壊したら、武器がもらえます");
+        t1 = true;
 		waitNext = true;
 	}
 	public void itemTutorial()
 	{
 		if (t2)
 			return;
-		tutorialText.text ="アイテムパネルが右上にあります";
-		changeTextAfter("バットをタップして装備出来ます");
-		t2 = true;
+        tutorialText.text = "右上のアイテムパネルでバットをタップして";
+        changeTextAfter("装備出来ます");
+        t2 = true;
 		t1 = true;
 		waitNext = true;
 	}
@@ -61,9 +61,9 @@ public class TutorialScript : MonoBehaviour {
 	{
 		if (t3)
 			return;
-		tutorialText.text ="体力が低い敵がゾンビ化できます";
-		changeTextAfter("左下のボタンを押した後敵に押せばゾンビ化できます");
-		t3 = true;
+        tutorialText.text = "敵の体力が低い時に左下のボタンを押してください";
+        changeTextAfter("次に敵を選択して、その敵がゾンビになる");
+        t3 = true;
 		waitNext = true;
 	}
 	public void partnerTutorial()
@@ -78,9 +78,9 @@ public class TutorialScript : MonoBehaviour {
 	{
 		if (t6)
 			return;
-		tutorialText.text ="アイテムバー石を押した後投げたい所にタップ";
-		changeTextAfter	("投げた場所に他のゾンビを引き寄せます");
-		t6 = true;
+        tutorialText.text = "アイテムパネルで石を押した後投げたい所にタップ";
+        changeTextAfter("投げた場所に他のゾンビを引き寄せます");
+        t6 = true;
 		waitNext = true;
 	}
 	private void changeTextAfter (string text){
